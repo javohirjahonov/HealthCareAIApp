@@ -15,7 +15,7 @@ public class ImageToText {
     private static final String GOOGLE_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
 
     public static void main(String[] args) throws IOException {
-        String imagePath = "C:\\FRONT\\Git Projects\\demo\\src\\main\\resources\\images\\img_2.png";
+        String imagePath = "C:\\FRONT\\Git Projects\\HealthCareProjectAI\\src\\main\\resources\\images\\img_2.png";
         String prompt = "Analyze the file and provide medical diagnosis information";
 //        Analyze the file and prov.3ide medical diagnosis information and information should be 200 words
         try {

@@ -22,8 +22,8 @@ public class ImageToSpeech {
 
     public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
         // Analyze the image and generate medical diagnosis information
-        String imagePath = "C:\\FRONT\\Git Projects\\demo\\src\\main\\resources\\images\\img_1.png";
-        String prompt = "Please analyze the medical image provided and generate a succinct diagnosis report. Include the disease name, current status, recommended treatment (including crackle treatment if applicable), and any other pertinent diagnostic information. Accuracy and clarity are paramount for effective patient management. Thank you.";
+        String imagePath = "C:\\FRONT\\Git Projects\\HealthCareProjectAI\\src\\main\\resources\\images\\photo_2023-11-24_11-22-48.jpg";
+        String prompt = "Analyse this photo";
         String generatedText = generateImageDescription(imagePath, prompt);
 
         // Convert the generated text to speech

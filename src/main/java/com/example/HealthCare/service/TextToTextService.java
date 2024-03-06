@@ -1,0 +1,169 @@
+package com.example.HealthCare.service;
+
+import com.microsoft.cognitiveservices.speech.*;
+import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+@Service
+public class TextToTextService {
+
+    private static final String GEMINI_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
+
+    private static final String SPEECH_KEY = "4ecc50ebd0804d48b896989838db8972";
+    private static final String SPEECH_REGION = "eastus";
+    public String generateSpeech(String text) {
+        try {
+            // Escape the text to ensure it doesn't contain any invalid characters
+            text = text.replace("\"", "\\\"");
+
+            // API endpoint URL
+            URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+
+            // Open connection
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set request method
+            connection.setRequestMethod("POST");
+
+            // Set request headers
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // Enable output/input streams
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+
+            // Request body
+            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+
+            // Write request body
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(requestBody.getBytes());
+            outputStream.flush();
+            outputStream.close();
+
+            // Get response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Read response
+            BufferedReader reader;
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            reader.close();
+
+            // Return response
+            return response.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error occurred: " + e.getMessage();
+        }
+    }
+
+    public String generateTextToSpeech(String text) {
+        try {
+            // API endpoint URL
+            URL url = new  URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+
+            // Open connection
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set request method
+            connection.setRequestMethod("POST");
+
+            // Set request headers
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // Enable output/input streams
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+
+            // Request body
+            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+
+            // Write request body
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(requestBody.getBytes());
+            outputStream.flush();
+            outputStream.close();
+
+            // Get response code
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            // Read response
+            BufferedReader reader;
+            StringBuilder response = new StringBuilder();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
+            String inputLine;
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            reader.close();
+
+            // Return response
+            return response.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error occurred: " + e.getMessage();
+        }
+
+    }
+
+    public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
+        try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
+            speechConfig.setSpeechSynthesisVoiceName("en-US-JennyNeural");
+            try (SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer(speechConfig)) {
+                SpeechSynthesisResult speechSynthesisResult = speechSynthesizer.SpeakTextAsync(text).get();
+                if (speechSynthesisResult.getReason() == ResultReason.SynthesizingAudioCompleted) {
+                    System.out.println("Speech synthesized successfully.");
+                    // Save the synthesized audio to a file
+                    saveAudioToFile(speechSynthesisResult, audioFilePath);
+                } else if (speechSynthesisResult.getReason() == ResultReason.Canceled) {
+                    SpeechSynthesisCancellationDetails cancellation = SpeechSynthesisCancellationDetails.fromResult(speechSynthesisResult);
+                    System.out.println("Speech synthesis canceled. Reason=" + cancellation.getReason());
+                    if (cancellation.getReason() == CancellationReason.Error) {
+                        System.out.println("Error details: " + cancellation.getErrorDetails());
+                    }
+                }
+            }
+        }
+    }
+
+    public static void saveAudioToFile(SpeechSynthesisResult synthesisResult, String filePath) {
+        byte[] audioData = synthesisResult.getAudioData();
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(audioData);
+            System.out.println("Audio saved to: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Failed to save audio to file: " + e.getMessage());
+        }
+    }
+
+    public static void saveTextToFile(String text, String filePath) {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(text);
+            System.out.println("Text saved to: " + filePath);
+        } catch (FileNotFoundException e) {
+            System.out.println("Failed to save text to file: " + e.getMessage());
+        }
+    }
+
+
+
+}
