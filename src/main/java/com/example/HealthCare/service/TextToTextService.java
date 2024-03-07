@@ -122,7 +122,7 @@ public class TextToTextService {
             connection.disconnect();
 
             // Return response
-            return extractTextFromJsonResponse(response.toString());
+            return response.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
