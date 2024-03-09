@@ -17,8 +17,8 @@ public class TextToTextService {
 
     private static final String GEMINI_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
 
-    private static final String SPEECH_KEY = "4ecc50ebd0804d48b896989838db8972";
-    private static final String SPEECH_REGION = "eastus";
+    private static final String SPEECH_KEY = "94b09939b89841528aa87693c503376d";
+    private static final String SPEECH_REGION = "uksouth";
     public String generateSpeech(String text) {
         try {
             // Escape the text to ensure it doesn't contain any invalid characters
@@ -360,7 +360,7 @@ public class TextToTextService {
 
     public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
-            speechConfig.setSpeechSynthesisVoiceName("en-US-JennyNeural");
+            speechConfig.setSpeechSynthesisVoiceName("en-GB-LibbyNeural");
             try (SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer(speechConfig)) {
                 SpeechSynthesisResult speechSynthesisResult = speechSynthesizer.SpeakTextAsync(text).get();
                 if (speechSynthesisResult.getReason() == ResultReason.SynthesizingAudioCompleted) {
