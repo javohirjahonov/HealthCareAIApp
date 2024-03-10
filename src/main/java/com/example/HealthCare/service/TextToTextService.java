@@ -288,11 +288,15 @@ public class TextToTextService {
 
     public void generateTextToSpeech(String text, String audioFilePath) {
         try {
-            // Create SpeechSynthesizer using Azure Cognitive Services credentials
+            // Create SpeechConfig using Azure Cognitive Services credentials
             SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION);
-            try (SpeechSynthesizer synthesizer = new SpeechSynthesizer(speechConfig)) {
+
+            // Create AudioConfig to specify output audio file path
+            AudioConfig audioConfig = AudioConfig.fromWavFileOutput(audioFilePath);
+
+            // Create SpeechSynthesizer with SpeechConfig and AudioConfig
+            try (SpeechSynthesizer synthesizer = new SpeechSynthesizer(speechConfig, audioConfig)) {
                 // Synthesize text to speech
-                AudioConfig audioConfig = AudioConfig.fromWavFileOutput(audioFilePath);
                 synthesizer.SpeakTextAsync(text).get();
             }
         } catch (Exception e) {
@@ -300,6 +304,9 @@ public class TextToTextService {
             throw new RuntimeException("Failed to generate text-to-speech");
         }
     }
+
+
+
 
 
 
