@@ -367,7 +367,7 @@ public class TextToTextService {
 
     public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
-            speechConfig.setSpeechSynthesisVoiceName("en-GB-LibbyNeural");
+            speechConfig.setSpeechSynthesisVoiceName("en-AU-NatashaNeural");
             try (SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer(speechConfig)) {
                 SpeechSynthesisResult speechSynthesisResult = speechSynthesizer.SpeakTextAsync(text).get();
                 if (speechSynthesisResult.getReason() == ResultReason.SynthesizingAudioCompleted) {
