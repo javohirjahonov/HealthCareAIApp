@@ -26,7 +26,7 @@ public class ImageToTextController {
         }
 
         try {
-            String prompt = "Analyze the file ";
+            String prompt = "Analyze the file";
             String generatedDescription = imageService.generateImageDescription(file, prompt);
             return ResponseEntity.ok().body(generatedDescription);
         } catch (IOException e) {

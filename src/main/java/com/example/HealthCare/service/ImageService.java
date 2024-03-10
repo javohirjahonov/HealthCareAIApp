@@ -24,8 +24,8 @@ import java.util.concurrent.ExecutionException;
 public class ImageService {
 
     private final ImageDataRepository imageRepository;
-    private static final String SPEECH_KEY = "94b09939b89841528aa87693c503376d";
-    private static final String SPEECH_REGION = "uksouth";
+    private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
+    private static final String SPEECH_REGION = "australiaeast";
     private static final String GOOGLE_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
 //    public String processImage(MultipartFile file) {
 //        try {

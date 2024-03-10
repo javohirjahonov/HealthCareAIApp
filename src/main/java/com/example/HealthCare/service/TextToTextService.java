@@ -17,8 +17,8 @@ public class TextToTextService {
 
     private static final String GEMINI_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
 
-    private static final String SPEECH_KEY = "94b09939b89841528aa87693c503376d";
-    private static final String SPEECH_REGION = "uksouth";
+    private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
+    private static final String SPEECH_REGION = "australiaeast";
     public String generateSpeech(String text) {
         try {
             // Escape the text to ensure it doesn't contain any invalid characters
@@ -122,7 +122,7 @@ public class TextToTextService {
             connection.disconnect();
 
             // Return response
-            return response.toString();
+            return extractTextFromJsonResponse(response.toString());
         } catch (IOException e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
