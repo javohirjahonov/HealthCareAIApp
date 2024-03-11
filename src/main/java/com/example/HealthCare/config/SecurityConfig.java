@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableSwagger2
+//@EnableSwagger2
 public class SecurityConfig implements WebMvcConfigurer {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
@@ -46,14 +46,14 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .build();
     }
 
-//    @Bean
-//    public Docket api() {
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.basePackage("com.example.HealthCare.controller"))
-//                .paths(PathSelectors.any())
-//                .build();
-//    }
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.example.HealthCare.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
 //    @Bean
 //    protected ApiInfo apiInfo() {
