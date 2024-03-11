@@ -19,7 +19,63 @@ public class TextToTextService {
 
     private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
     private static final String SPEECH_REGION = "australiaeast";
-    public String generateSpeech(String text) {
+//    public String generateSpeech(String text) {
+//        try {
+//            // Escape the text to ensure it doesn't contain any invalid characters
+//            text = text.replace("\"", "\\\"");
+//
+//            // API endpoint URL
+//            URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+//
+//            // Open connection
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//
+//            // Set request method
+//            connection.setRequestMethod("POST");
+//
+//            // Set request headers
+//            connection.setRequestProperty("Content-Type", "application/json");
+//
+//            // Enable output/input streams
+//            connection.setDoOutput(true);
+//            connection.setDoInput(true);
+//
+//            // Request body
+//            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+//
+//            // Write request body
+//            OutputStream outputStream = connection.getOutputStream();
+//            outputStream.write(requestBody.getBytes());
+//            outputStream.flush();
+//            outputStream.close();
+//
+//            // Get response code
+//            int responseCode = connection.getResponseCode();
+//            System.out.println("Response Code: " + responseCode);
+//
+//            // Read response
+//            BufferedReader reader;
+//            if (responseCode == HttpURLConnection.HTTP_OK) {
+//                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            } else {
+//                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+//            }
+//            String inputLine;
+//            StringBuilder response = new StringBuilder();
+//            while ((inputLine = reader.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            reader.close();
+//
+//            // Return response
+//            return response.toString();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error occurred: " + e.getMessage();
+//        }
+//    }
+
+    public String generateTextToSpeech(String text) {
         try {
             // Escape the text to ensure it doesn't contain any invalid characters
             text = text.replace("\"", "\\\"");
@@ -44,38 +100,36 @@ public class TextToTextService {
             String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
 
             // Write request body
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(requestBody.getBytes());
-            outputStream.flush();
-            outputStream.close();
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                outputStream.write(requestBody.getBytes());
+            }
 
             // Get response code
             int responseCode = connection.getResponseCode();
             System.out.println("Response Code: " + responseCode);
 
             // Read response
-            BufferedReader reader;
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            } else {
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-            }
-            String inputLine;
             StringBuilder response = new StringBuilder();
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    responseCode == HttpURLConnection.HTTP_OK ? connection.getInputStream() : connection.getErrorStream()))) {
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null) {
+                    response.append(inputLine);
+                }
             }
-            reader.close();
+
+            // Close connection
+            connection.disconnect();
 
             // Return response
-            return response.toString();
-        } catch (Exception e) {
+            return extractTextFromJsonResponse(response.toString());
+        } catch (IOException e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
         }
     }
 
-    public String generateContent(String text) {
+    public String generateTextToText(String text) {
         try {
             // Escape the text to ensure it doesn't contain any invalid characters
             text = text.replace("\"", "\\\"");
@@ -286,86 +340,86 @@ public class TextToTextService {
 //
 
 
-    public void generateTextToSpeech(String text, String audioFilePath) {
-        try {
-            // Create SpeechConfig using Azure Cognitive Services credentials
-            SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION);
-
-            // Create AudioConfig to specify output audio file path
-            AudioConfig audioConfig = AudioConfig.fromWavFileOutput(audioFilePath);
-
-            // Create SpeechSynthesizer with SpeechConfig and AudioConfig
-            try (SpeechSynthesizer synthesizer = new SpeechSynthesizer(speechConfig, audioConfig)) {
-                // Synthesize text to speech
-                synthesizer.SpeakTextAsync(text).get();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to generate text-to-speech");
-        }
-    }
-
-
+//    public void generateTextToSpeech(String text, String audioFilePath) {
+//        try {
+//            // Create SpeechConfig using Azure Cognitive Services credentials
+//            SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION);
+//
+//            // Create AudioConfig to specify output audio file path
+//            AudioConfig audioConfig = AudioConfig.fromWavFileOutput(audioFilePath);
+//
+//            // Create SpeechSynthesizer with SpeechConfig and AudioConfig
+//            try (SpeechSynthesizer synthesizer = new SpeechSynthesizer(speechConfig, audioConfig)) {
+//                // Synthesize text to speech
+//                synthesizer.SpeakTextAsync(text).get();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to generate text-to-speech");
+//        }
+//    }
 
 
 
 
 
-    public String generateTextToSpeech(String text) {
-        try {
-            // API endpoint URL
-            URL url = new  URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
 
-            // Open connection
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            // Set request method
-            connection.setRequestMethod("POST");
+//    public String generateTextToSpeech(String text) {
+//        try {
+//            // API endpoint URL
+//            URL url = new  URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+//
+//            // Open connection
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//
+//            // Set request method
+//            connection.setRequestMethod("POST");
+//
+//            // Set request headers
+//            connection.setRequestProperty("Content-Type", "application/json");
+//
+//            // Enable output/input streams
+//            connection.setDoOutput(true);
+//            connection.setDoInput(true);
+//
+//            // Request body
+//            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+//
+//            // Write request body
+//            OutputStream outputStream = connection.getOutputStream();
+//            outputStream.write(requestBody.getBytes());
+//            outputStream.flush();
+//            outputStream.close();
+//
+//            // Get response code
+//            int responseCode = connection.getResponseCode();
+//            System.out.println("Response Code: " + responseCode);
+//
+//            // Read response
+//            BufferedReader reader;
+//            StringBuilder response = new StringBuilder();
+//            if (responseCode == HttpURLConnection.HTTP_OK) {
+//                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            } else {
+//                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+//            }
+//            String inputLine;
+//            while ((inputLine = reader.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            reader.close();
+//
+//            // Return response
+//            return response.toString();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error occurred: " + e.getMessage();
+//        }
+//
+//    }
 
-            // Set request headers
-            connection.setRequestProperty("Content-Type", "application/json");
-
-            // Enable output/input streams
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-
-            // Request body
-            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
-
-            // Write request body
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(requestBody.getBytes());
-            outputStream.flush();
-            outputStream.close();
-
-            // Get response code
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-            // Read response
-            BufferedReader reader;
-            StringBuilder response = new StringBuilder();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            } else {
-                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-            }
-            String inputLine;
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
-            }
-            reader.close();
-
-            // Return response
-            return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error occurred: " + e.getMessage();
-        }
-
-    }
-
-    public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
+    public void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
             speechConfig.setSpeechSynthesisVoiceName("en-AU-NatashaNeural");
             try (SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer(speechConfig)) {
@@ -403,7 +457,4 @@ public class TextToTextService {
             System.out.println("Failed to save text to file: " + e.getMessage());
         }
     }
-
-
-
 }

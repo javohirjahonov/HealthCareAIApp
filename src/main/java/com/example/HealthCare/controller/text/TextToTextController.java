@@ -17,6 +17,6 @@ public class TextToTextController {
     public String generateSpeech(
             @RequestBody String text
     ) {
-        return textToText.generateContent(text);
+        return textToText.generateTextToText(text);
     }
 }

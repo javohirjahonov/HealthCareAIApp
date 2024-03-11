@@ -2,6 +2,8 @@ package com.example.HealthCare.domain.entity.image;
 
 import com.example.HealthCare.domain.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Lob;
 import lombok.*;
 
@@ -14,5 +16,8 @@ import lombok.*;
 public class ImageEntity extends BaseEntity {
     @Lob
     private byte[] imageData;
+
+    @Enumerated(value = EnumType.STRING)
+    private ImageDataType dataType;
 
 }

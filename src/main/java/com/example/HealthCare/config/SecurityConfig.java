@@ -20,10 +20,12 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableSwagger2
 public class SecurityConfig implements WebMvcConfigurer {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
@@ -52,6 +54,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .paths(PathSelectors.any())
                 .build();
     }
+
+    @Bean
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("HealthCare API")

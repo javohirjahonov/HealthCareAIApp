@@ -1,5 +1,6 @@
 package com.example.HealthCare.controller.image;
 
+import com.example.HealthCare.domain.entity.image.ImageEntity;
 import com.example.HealthCare.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class ImageToTextController {
 
         try {
             String prompt = "Analyze the file";
-            String generatedDescription = imageService.generateImageDescription(file, prompt);
+            String generatedDescription = imageService.generateImageToText(file, prompt);
             return ResponseEntity.ok().body(generatedDescription);
         } catch (IOException e) {
             e.printStackTrace();

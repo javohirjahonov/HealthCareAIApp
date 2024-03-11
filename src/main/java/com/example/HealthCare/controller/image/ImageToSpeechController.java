@@ -1,5 +1,6 @@
 package com.example.HealthCare.controller.image;
 
+import com.example.HealthCare.domain.entity.image.ImageEntity;
 import com.example.HealthCare.service.ImageService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,7 +32,7 @@ public class ImageToSpeechController {
         }
         try {
             String prompt = "Analyse this photo";
-            String result = imageService.generateImageDescription(file, prompt);
+            String result = imageService.generateImageToText(file, prompt);
             return ResponseEntity.ok().body(result);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +50,7 @@ public class ImageToSpeechController {
         try {
             String prompt = "Analyse this photo";
             String audioFilePath = "output.wav";
-            String generatedText = imageService.generateImageDescription(file, prompt);
+            String generatedText = imageService.generateImageToSpeech(file, prompt);
             ImageService.convertTextToSpeech(generatedText, audioFilePath);
             ImageService.saveTextToFile(generatedText, "output.txt");
             return ResponseEntity.ok().body("Speech generated successfully");

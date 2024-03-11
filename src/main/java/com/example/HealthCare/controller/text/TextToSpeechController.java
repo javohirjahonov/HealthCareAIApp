@@ -37,8 +37,8 @@ public class TextToSpeechController {
         try {
             String audioFilePath = "output2.wav";
             // Generate text-to-speech using the service
-            String response = textToText.generateContent(text);
-            TextToTextService.convertTextToSpeech(response, audioFilePath);
+            String response = textToText.generateTextToSpeech(text);
+            textToText.convertTextToSpeech(response, audioFilePath);
             return ResponseEntity.ok().body("Speech generated successfully");
         } catch (Exception e) {
             e.printStackTrace();

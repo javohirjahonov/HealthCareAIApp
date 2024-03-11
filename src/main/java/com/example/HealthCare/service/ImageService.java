@@ -1,5 +1,6 @@
 package com.example.HealthCare.service;
 
+import com.example.HealthCare.domain.entity.image.ImageDataType;
 import com.example.HealthCare.domain.entity.image.ImageEntity;
 import com.example.HealthCare.repository.ImageDataRepository;
 import com.microsoft.cognitiveservices.speech.*;
@@ -40,9 +41,15 @@ public class ImageService {
 //            return "Failed to upload image";
 //        }
 //    }
-    public String generateImageDescription(MultipartFile file, String prompt) throws IOException {
+    public String generateImageToText(MultipartFile file, String prompt) throws IOException {
+        ImageEntity image = ImageEntity.builder()
+                .imageData(file.getBytes())
+                .dataType(ImageDataType.IMAGE_TO_TEXT)
+                .build();
+        ImageEntity imageEntity = imageRepository.save(image);
+
         try {
-            byte[] imageBytes = file.getBytes();
+            byte[] imageBytes = imageEntity.getImageData();
             String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
             Map<String, Object> inlineData = new HashMap<>();
             inlineData.put("mime_type", "image/jpeg");
@@ -89,14 +96,20 @@ public class ImageService {
             return "An error occurred while generating the description.";
         }
     }
-    public String generateImageSpeech(MultipartFile file, String prompt) throws IOException {
+
+    public String generateImageToSpeech(MultipartFile file, String prompt) throws IOException {
+        ImageEntity image = ImageEntity.builder()
+                .imageData(file.getBytes())
+                .dataType(ImageDataType.IMAGE_TO_SPEECH)
+                .build();
+        ImageEntity imageEntity = imageRepository.save(image);
+
         try {
-            byte[] imageBytes = file.getBytes();
+            byte[] imageBytes = imageEntity.getImageData();
             String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
             Map<String, Object> inlineData = new HashMap<>();
             inlineData.put("mime_type", "image/jpeg");
             inlineData.put("data", imageBase64);
-
             Map<String, Object> partImage = new HashMap<>();
             partImage.put("inline_data", inlineData);
 
@@ -111,9 +124,8 @@ public class ImageService {
             Map<String, Object> payloadMap = new HashMap<>();
             payloadMap.put("contents", contents);
 
-            // Send request to Google Vision API
-            // (You need to replace YOUR_GOOGLE_API_KEY with your actual API key)
             JSONObject payload = new JSONObject(payloadMap);
+
             String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=" + GOOGLE_API_KEY;
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient client = new OkHttpClient();
@@ -136,12 +148,60 @@ public class ImageService {
                 return generatedText.toString().trim();
             }
         } catch (Exception e) {
-            System.out.println("An error occurred while generating the description.");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return "An error occurred while generating the description.";
         }
     }
 
+//    public void generateImageDescription(MultipartFile file, String prompt) throws IOException {
+//        try {
+//            byte[] imageBytes = file.getBytes();
+//            String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
+//            Map<String, Object> inlineData = new HashMap<>();
+//            inlineData.put("mime_type", "image/jpeg");
+//            inlineData.put("data", imageBase64);
+//            Map<String, Object> partImage = new HashMap<>();
+//            partImage.put("inline_data", inlineData);
+//
+//            Map<String, Object> partText = new HashMap<>();
+//            partText.put("text", prompt);
+//
+//            Map<String, Object> contentPart = new HashMap<>();
+//            contentPart.put("parts", new Object[]{partText, partImage});
+//
+//            Map<String, Object>[] contents = new Map[]{contentPart};
+//
+//            Map<String, Object> payloadMap = new HashMap<>();
+//            payloadMap.put("contents", contents);
+//
+//            JSONObject payload = new JSONObject(payloadMap);
+//
+//            String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=" + GOOGLE_API_KEY;
+//            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+//            OkHttpClient client = new OkHttpClient();
+//            RequestBody body = RequestBody.create(JSON, payload.toString());
+//            Request request = new Request.Builder()
+//                    .url(url)
+//                    .post(body)
+//                    .addHeader("Content-Type", "application/json")
+//                    .build();
+//
+//            try (Response response = client.newCall(request).execute()) {
+//                String responseString = response.body().string();
+//                JSONObject responseObject = new JSONObject(responseString);
+//                JSONObject content = responseObject.getJSONArray("candidates").getJSONObject(0).getJSONObject("content");
+//                StringBuilder generatedText = new StringBuilder();
+//                for (int i = 0; i < content.getJSONArray("parts").length(); i++) {
+//                    String text = content.getJSONArray("parts").getJSONObject(i).optString("text", "");
+//                    generatedText.append(text).append(" ");
+//                }
+//                return generatedText.toString().trim();
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            return "An error occurred while generating the description.";
+//        }
+//    }
     public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
             speechConfig.setSpeechSynthesisVoiceName("en-GB-LibbyNeural");
