@@ -55,14 +55,14 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .build();
     }
 
-    @Bean
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("HealthCare API")
-                .description("API documentation for HealthCare application")
-                .version("1.0")
-                .build();
-    }
+//    @Bean
+//    protected ApiInfo apiInfo() {
+//        return new ApiInfoBuilder()
+//                .title("HealthCare API")
+//                .description("API documentation for HealthCare application")
+//                .version("1.0")
+//                .build();
+//    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
