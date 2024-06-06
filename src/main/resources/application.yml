@@ -2,16 +2,17 @@ server:
   port: 8088
 
 spring:
-  datasource:
+    datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/health_data
+    url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
     username: postgres
-    password: 123
+    password: YJZUt4NvSlR|4},v
     hikari:
-      connection-timeout: 30000
+      connection-timeout: 20000
+      minimum-idle: 10
       maximum-pool-size: 10
-      minimum-idle: 2
-      idle-timeout: 600000
+      idle-timeout: 300000
+      max-lifetime: 600000
   jpa:
     hibernate:
       ddl-auto: update
