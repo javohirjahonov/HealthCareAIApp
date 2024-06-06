@@ -7,7 +7,7 @@ spring:
      url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
      username: postgres
      password: YJZUt4NvSlR|4},v
-    hikari:
+     hikari:
       connection-timeout: 20000
       minimum-idle: 10
       maximum-pool-size: 10
