@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.HealthCare.service.ImageService.convertTextToSpeech;
+
 @RestController
 @RequestMapping("/images")
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class ImageToSpeechController {
     }
 
     @Operation(summary = "Method for upload file")
-    @PostMapping(value= "/generate-speech", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/generate-speech", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> generateSpeech(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Please upload a file");
@@ -49,10 +51,10 @@ public class ImageToSpeechController {
 
         try {
             String prompt = "Analyse this photo";
-            String audioFilePath = "output.wav";
+            String basePath = "D:\\OWN INFORMATONS\\GIT PROJECTS\\Health Care AI\\src\\main\\resources\\voice_data";
             String generatedText = imageService.generateImageToSpeech(file, prompt);
-            ImageService.convertTextToSpeech(generatedText, audioFilePath);
-            ImageService.saveTextToFile(generatedText, "output.txt");
+            convertTextToSpeech(generatedText, basePath+ "\\output.wav");
+            ImageService.saveTextToFile(generatedText, basePath);
             return ResponseEntity.ok().body("Speech generated successfully");
         } catch (IOException | InterruptedException | ExecutionException e) {
             e.printStackTrace();

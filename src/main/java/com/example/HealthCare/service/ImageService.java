@@ -15,7 +15,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +29,7 @@ public class ImageService {
     private final ImageDataRepository imageRepository;
     private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
     private static final String SPEECH_REGION = "australiaeast";
-    private static final String GOOGLE_API_KEY = "AIzaSyBUPcSMKyKk5B0DKCdznjiiyJQao2I1RTc";
+    private static final String GOOGLE_API_KEY = "AIzaSyCmXzBSlojLMn0ThsqaXXBQH03OxyfcZT8";
 //    public String processImage(MultipartFile file) {
 //        try {
 //            byte[] imageData = file.getBytes();
@@ -202,15 +204,16 @@ public class ImageService {
 //            return "An error occurred while generating the description.";
 //        }
 //    }
-    public static void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
+
+    public static void convertTextToSpeech(String text, String basePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
             speechConfig.setSpeechSynthesisVoiceName("en-GB-LibbyNeural");
             try (SpeechSynthesizer speechSynthesizer = new SpeechSynthesizer(speechConfig)) {
                 SpeechSynthesisResult speechSynthesisResult = speechSynthesizer.SpeakTextAsync(text).get();
                 if (speechSynthesisResult.getReason() == ResultReason.SynthesizingAudioCompleted) {
                     System.out.println("Speech synthesized successfully.");
-                    // Save the synthesized audio to a file
-                    saveAudioToFile(speechSynthesisResult, audioFilePath);
+                    // Save the synthesized audio to a file with voice owner, timestamp, and description
+                    saveAudioToFile(speechSynthesisResult, basePath);
                 } else if (speechSynthesisResult.getReason() == ResultReason.Canceled) {
                     SpeechSynthesisCancellationDetails cancellation = SpeechSynthesisCancellationDetails.fromResult(speechSynthesisResult);
                     System.out.println("Speech synthesis canceled. Reason=" + cancellation.getReason());
@@ -223,8 +226,12 @@ public class ImageService {
     }
 
 
-    public static void saveAudioToFile(SpeechSynthesisResult synthesisResult, String filePath) {
+    public static void saveAudioToFile(SpeechSynthesisResult synthesisResult, String basePath) {
         byte[] audioData = synthesisResult.getAudioData();
+        // Generate the current timestamp
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        // Create the file path using basePath, voice owner, timestamp, and description
+        String filePath = basePath + "\\" + "_" + timestamp + "_"  + ".wav";
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(audioData);
             System.out.println("Audio saved to: " + filePath);

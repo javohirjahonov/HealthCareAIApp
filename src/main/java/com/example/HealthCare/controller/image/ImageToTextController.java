@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class ImageToTextController {
 
     private final ImageService imageService;
     @Operation(summary = "Method for upload file")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/generate-description", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> generateDescription(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {

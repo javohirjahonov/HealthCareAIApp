@@ -1,5 +1,6 @@
-package com.example.HealthCare.domain.dto.response;
+package com.example.HealthCare.domain.dto.request.response;
 
+import com.example.HealthCare.domain.dto.request.user.UserDetailsForFront;
 import lombok.*;
 
 @AllArgsConstructor
@@ -10,4 +11,5 @@ import lombok.*;
 public class JwtResponse {
     private String accessToken;
     private String refreshToken;
+    private UserDetailsForFront user;
 }

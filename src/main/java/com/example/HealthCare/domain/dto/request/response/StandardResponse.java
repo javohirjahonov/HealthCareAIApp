@@ -1,4 +1,4 @@
-package com.example.HealthCare.domain.dto.response;
+package com.example.HealthCare.domain.dto.request.response;
 
 import lombok.Builder;
 import lombok.Data;

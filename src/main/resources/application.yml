@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://health-care-ai-db-do-user-15998592-0.c.db.ondigitalocean.com:25060/healthcaredb
-    username: doadmin
-    password: AVNS_sY4Cld-we9VZx04_-wu
+    url: jdbc:postgresql://localhost:5432/health_data
+    username: postgres
+    password: 123
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
