@@ -2,23 +2,25 @@ server:
   port: 8088
 
 spring:
-  datasource:
-     driver-class-name: org.postgresql.Driver
-     url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
-     username: postgres
-     password: YJZUt4NvSlR|4},v
-     hikari:
-      connection-timeout: 20000
-      minimum-idle: 10
-      maximum-pool-size: 10
-      idle-timeout: 300000
-      max-lifetime: 600000
+  ddatasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
+    username: postgres
+    password: YJZUt4NvSlR|4},v
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 10
+      minimumIdle: 2
+      idleTimeout: 300000
+      maxLifetime: 1800000
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
   mail:
     host: smtp.gmail.com
     port: 587
