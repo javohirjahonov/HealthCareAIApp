@@ -1,8 +1,8 @@
 package com.example.HealthCare.config;
 
-import com.example.HealthCare.domain.dto.response.ApiErrorResponse;
-import com.example.HealthCare.domain.dto.response.StandardResponse;
-import com.example.HealthCare.domain.dto.response.Status;
+import com.example.HealthCare.domain.dto.request.response.ApiErrorResponse;
+import com.example.HealthCare.domain.dto.request.response.StandardResponse;
+import com.example.HealthCare.domain.dto.request.response.Status;
 import com.example.HealthCare.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
