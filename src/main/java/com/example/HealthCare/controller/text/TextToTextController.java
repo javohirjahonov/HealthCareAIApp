@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TextToTextController {
 
     private final TextToTextService textToText;
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping("/generate-text")
     public String generateSpeech(
             @RequestBody String text
