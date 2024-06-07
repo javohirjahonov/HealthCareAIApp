@@ -33,7 +33,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
 
     private static final String[] WHITE_LIST_URL = {
-            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**",
+            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text/**"
     };
 
     @Bean
