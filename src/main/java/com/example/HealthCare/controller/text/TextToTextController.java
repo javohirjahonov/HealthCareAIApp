@@ -1,5 +1,7 @@
 package com.example.HealthCare.controller.text;
 
+import com.example.HealthCare.domain.dto.request.response.StandardResponse;
+import com.example.HealthCare.domain.dto.request.response.Status;
 import com.example.HealthCare.domain.dto.request.text.TextRequestDto;
 import com.example.HealthCare.service.TextToTextService;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +22,25 @@ public class TextToTextController {
     private final TextToTextService textToTextService;
 
     @PostMapping("/generate-text")
-    public ResponseEntity<String> generateText(
+    public StandardResponse<String> generateText(
             @RequestBody TextRequestDto requestDto // Using DTO to encapsulate the text input
     ) {
         log.info("Received request to generate text with input: {}", requestDto.getText());
         try {
             String generatedText = textToTextService.generateTextToText(requestDto.getText());
-            return ResponseEntity.ok(generatedText);
+            return StandardResponse.<String>builder()
+                    .status(Status.SUCCESS)
+                    .data(generatedText)
+                    .message("Text Successfully Generated")
+                    .build();
         } catch (Exception e) {
             log.error("Error generating text: ", e);
-            return ResponseEntity.internalServerError().body("Error generating text");
+            ResponseEntity<String> errorGeneratingText = ResponseEntity.internalServerError().body("Error generating text");
+            return StandardResponse.<String>builder()
+                    .status(Status.SUCCESS)
+                    .data(String.valueOf(errorGeneratingText))
+                    .message("Error generating text")
+                    .build();
         }
     }
 }
