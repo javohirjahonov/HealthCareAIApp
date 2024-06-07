@@ -57,7 +57,7 @@ public class SecurityConfig {
                         exceptionHandling.authenticationEntryPoint(authenticationEntryPoint())
                 )
                 .headers(headers -> headers
-                        .xssProtection(xssProtection -> xssProtection.headerValue(XXssProtectionHeaderWriter.HeaderValue.valueOf("1; mode=block")))
+                        .xssProtection(xssProtection -> xssProtection.disable())  // This disables the header
                         .frameOptions(frameOptions -> frameOptions.deny())
                         .contentTypeOptions(contentTypeOptions -> contentTypeOptions.disable())
                         .contentSecurityPolicy(contentSecurityPolicy -> contentSecurityPolicy.policyDirectives("script-src 'self'; object-src 'none';"))
