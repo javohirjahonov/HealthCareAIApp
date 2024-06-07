@@ -2,7 +2,7 @@ server:
   port: 8088
 
 spring:
-  atasource:
+  datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
     username: postgres
