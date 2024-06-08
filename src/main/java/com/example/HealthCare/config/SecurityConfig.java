@@ -68,14 +68,15 @@ public class SecurityConfig {
     private AuthenticationEntryPoint authenticationEntryPoint() {
         return new CustomAuthenticationEntryPoint(objectMapper);
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("https://8088-cs-74391610147-default.cs-europe-west4-bhnf.cloudshell.dev"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "Accept", "Origin"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L); // Max age set to 1 hour
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true); // If you need to send credentials
+        configuration.setMaxAge(3600L); // Access-Control-Max-Age
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
