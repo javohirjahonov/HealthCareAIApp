@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +28,10 @@ public class TextToTextController {
     private final TextToTextService textToTextService;
 
     @PostMapping("/generate-text")
+    @PreAuthorize("hasRole('USER')")
     public StandardResponse<String> generateText(
-            @Valid @RequestBody TextRequestDto requestDto,
-            BindingResult bindingResult// Using DTO to encapsulate the text input
+            @Valid @RequestBody TextRequestDto requestDto
     ) throws RequestValidationException {
-        if (bindingResult.hasErrors()){
-            List<ObjectError> allErrors = bindingResult.getAllErrors();
-            throw new RequestValidationException(allErrors);
-        }
         log.info("Received request to generate text with input: {}", requestDto.getText());
         try {
             String generatedText = textToTextService.generateTextToText(requestDto.getText());
