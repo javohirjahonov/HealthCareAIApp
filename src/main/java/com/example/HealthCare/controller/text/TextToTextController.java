@@ -3,15 +3,20 @@ package com.example.HealthCare.controller.text;
 import com.example.HealthCare.domain.dto.request.response.StandardResponse;
 import com.example.HealthCare.domain.dto.request.response.Status;
 import com.example.HealthCare.domain.dto.request.text.TextRequestDto;
+import com.example.HealthCare.exception.RequestValidationException;
 import com.example.HealthCare.service.TextToTextService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/text-to-text")
@@ -23,8 +28,13 @@ public class TextToTextController {
 
     @PostMapping("/generate-text")
     public StandardResponse<String> generateText(
-            @RequestBody TextRequestDto requestDto // Using DTO to encapsulate the text input
-    ) {
+            @Valid @RequestBody TextRequestDto requestDto,
+            BindingResult bindingResult// Using DTO to encapsulate the text input
+    ) throws RequestValidationException {
+        if (bindingResult.hasErrors()){
+            List<ObjectError> allErrors = bindingResult.getAllErrors();
+            throw new RequestValidationException(allErrors);
+        }
         log.info("Received request to generate text with input: {}", requestDto.getText());
         try {
             String generatedText = textToTextService.generateTextToText(requestDto.getText());
