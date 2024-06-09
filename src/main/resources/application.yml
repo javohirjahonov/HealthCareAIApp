@@ -1,4 +1,5 @@
 server:
+  address: 0.0.0.0
   port: 8088
   compression:
     enabled: true
@@ -8,7 +9,6 @@ server:
     threads:
       min-spare: 20
       max: 200
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
