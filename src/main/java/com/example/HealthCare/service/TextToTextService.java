@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class TextToTextService {
 
-    private static final String GEMINI_API_KEY = "AIzaSyCmXzBSlojLMn0ThsqaXXBQH03OxyfcZT8";
+    private static final String GEMINI_API_KEY = "AIzaSyB3bU1IPq0JewT0uJjq3ZANOlg-QvRofWo";
 
     private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
     private static final String SPEECH_REGION = "australiaeast";
