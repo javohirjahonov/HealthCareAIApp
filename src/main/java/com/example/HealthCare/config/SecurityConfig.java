@@ -32,7 +32,7 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
 
     private static final String[] WHITE_LIST_URL = {
-            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text-controller/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text/**", "https://8088-cs-74391610147-default.cs-europe-west4-bhnf.cloudshell.dev/text-to-text/generate-text"
     };
 
     @Bean
