@@ -63,12 +63,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}password").roles("ADMIN")
-                .and()
-                .withUser("user").password("{noop}userpass").roles("USER");
-        return auth.build();
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
-
 }
