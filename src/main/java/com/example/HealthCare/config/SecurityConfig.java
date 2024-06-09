@@ -42,15 +42,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}password").roles("ADMIN")
-                .and()
-                .withUser("user").password("{noop}userpass").roles("USER");
-        return auth.build();
-    }
-
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://8088-cs-74391610147-default.cs-europe-west4-bhnf.cloudshell.dev")); // Add your client's host URL
