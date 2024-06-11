@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&useSSL=false
+    url: jdbc:postgresql://google/health_data?cloudSqlInstance=healthcare-425616:europe-west2:healthcare&socketFactory=com.google.cloud.sql.postgres.SocketFactory&sslmode=disable
     username: postgres
     password: YJZUt4NvSlR|4},v
     hikari:
