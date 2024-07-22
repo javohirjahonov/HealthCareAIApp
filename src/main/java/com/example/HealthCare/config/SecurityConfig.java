@@ -32,7 +32,7 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     private static final String[] WHITE_LIST_URL = {
-            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text/**", "/images/**"
     };
 
     @Bean

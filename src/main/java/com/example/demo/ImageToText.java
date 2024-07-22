@@ -17,7 +17,7 @@ public class ImageToText {
     public static void main(String[] args) throws IOException {
         String imagePath = "C:\\FRONT\\Git Projects\\HealthCareProjectAI\\src\\main\\resources\\images\\img_2.png";
         String prompt = "Analyze the file and provide medical diagnosis information";
-//        Analyze the file and prov.3ide medical diagnosis information and information should be 200 words
+
         try {
             System.out.println(generateImageDescription(imagePath, prompt));
         } catch (Exception e) {

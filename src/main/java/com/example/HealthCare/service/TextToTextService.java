@@ -1,7 +1,7 @@
 package com.example.HealthCare.service;
 
+import com.example.HealthCare.utility.FileUtility;
 import com.microsoft.cognitiveservices.speech.*;
-import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,13 +10,18 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 public class TextToTextService {
 
     private static final String GEMINI_API_KEY = "AIzaSyB3bU1IPq0JewT0uJjq3ZANOlg-QvRofWo";
-
+    private static final String MANUALS_PATH = "D:\\OWN INFORMATONS\\GIT PROJECTS\\HealthCareAIApp\\src\\main\\resources\\manuals";
+    private static final String PDF_OUTPUT_PATH = "D:\\OWN INFORMATONS\\GIT PROJECTS\\HealthCareAIApp\\src\\main\\resources\\output.pdf";
     private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
     private static final String SPEECH_REGION = "australiaeast";
 //    public String generateSpeech(String text) {
@@ -129,63 +134,148 @@ public class TextToTextService {
         }
     }
 
-    public String generateTextToText(String text) {
-        try {
-            // Escape the text to ensure it doesn't contain any invalid characters
-            text = text.replace("\"", "\\\"");
+    //!!!!!
 
-            // API endpoint URL
-            URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+//    public String generateTextToText(String text) {
+//        try {
+//            // Escape the text to ensure it doesn't contain any invalid characters
+//            text = text.replace("\"", "\\\"");
+//
+//            // API endpoint URL
+//            URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+//
+//            // Open connection
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//
+//            // Set request method
+//            connection.setRequestMethod("POST");
+//
+//            // Set request headers
+//            connection.setRequestProperty("Content-Type", "application/json");
+//
+//            // Enable output/input streams
+//            connection.setDoOutput(true);
+//            connection.setDoInput(true);
+//
+//            // Request body
+//            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+//
+//            // Write request body
+//            try (OutputStream outputStream = connection.getOutputStream()) {
+//                outputStream.write(requestBody.getBytes());
+//            }
+//
+//            // Get response code
+//            int responseCode = connection.getResponseCode();
+//            System.out.println("Response Code: " + responseCode);
+//
+//            // Read response
+//            StringBuilder response = new StringBuilder();
+//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+//                    responseCode == HttpURLConnection.HTTP_OK ? connection.getInputStream() : connection.getErrorStream()))) {
+//                String inputLine;
+//                while ((inputLine = reader.readLine()) != null) {
+//                    response.append(inputLine);
+//                }
+//            }
+//
+//            // Close connection
+//            connection.disconnect();
+//
+//            // Return response
+//            return extractTextFromJsonResponse(response.toString());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "Error occurred: " + e.getMessage();
+//        }
+//    }
 
-            // Open connection
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    public String generateTextToText(String text) throws Exception {
+        // Save the text input as a PDF file
+        FileUtility.saveTextAsPdf(text, PDF_OUTPUT_PATH);
 
-            // Set request method
-            connection.setRequestMethod("POST");
+        // Read manuals and other files from the server
+        String manualsContent = readManuals();
 
-            // Set request headers
-            connection.setRequestProperty("Content-Type", "application/json");
+        // Combine the user input with the manuals content
+        String combinedContent = text + "\n\n" + manualsContent;
 
-            // Enable output/input streams
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-
-            // Request body
-            String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
-
-            // Write request body
-            try (OutputStream outputStream = connection.getOutputStream()) {
-                outputStream.write(requestBody.getBytes());
-            }
-
-            // Get response code
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-            // Read response
-            StringBuilder response = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    responseCode == HttpURLConnection.HTTP_OK ? connection.getInputStream() : connection.getErrorStream()))) {
-                String inputLine;
-                while ((inputLine = reader.readLine()) != null) {
-                    response.append(inputLine);
-                }
-            }
-
-            // Close connection
-            connection.disconnect();
-
-            // Return response
-            return extractTextFromJsonResponse(response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error occurred: " + e.getMessage();
-        }
+        // Send the combined content to Gemini API for analysis
+        return sendToGemini(combinedContent);
     }
 
-    public String extractTextFromJsonResponse(String jsonResponse) {
+
+    private String readManuals() throws IOException {
+        return Files.walk(Paths.get(MANUALS_PATH))
+                .filter(Files::isRegularFile)
+                .map(path -> {
+                    try {
+                        return Files.readString(path, StandardCharsets.UTF_8);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return "";
+                    }
+                })
+                .collect(Collectors.joining("\n\n"));
+    }
+
+    private String sendToGemini(String text) throws IOException {
+        // Escape the text to ensure it doesn't contain any invalid characters
+        text = text.replace("\"", "\\\"");
+
+        // API endpoint URL
+        URL url = new URL("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + GEMINI_API_KEY);
+
+        // Open connection
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        // Set request method
+        connection.setRequestMethod("POST");
+
+        // Set request headers
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        // Enable output/input streams
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+
+        // Request body
+        String requestBody = "{\"contents\": [{\"parts\": [{\"text\": \"" + text + "\"}]}]}";
+
+        // Write request body
+        try (OutputStream outputStream = connection.getOutputStream()) {
+            outputStream.write(requestBody.getBytes(StandardCharsets.UTF_8));
+        }
+
+        // Get response code
+        int responseCode = connection.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+
+        // Read response
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                responseCode == HttpURLConnection.HTTP_OK ? connection.getInputStream() : connection.getErrorStream(), StandardCharsets.UTF_8))) {
+            String inputLine;
+            while ((inputLine = reader.readLine()) != null) {
+                response.append(inputLine);
+            }
+        }
+
+        // Close connection
+        connection.disconnect();
+
+        // Return response
+        return extractTextFromJsonResponse(response.toString());
+    }
+
+    private String extractTextFromJsonResponse(String jsonResponse) {
+        // Extract text from JSON response
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
+            if (!jsonObject.has("candidates")) {
+                return "Error: No candidates found in the response";
+            }
+
             JSONArray candidates = jsonObject.getJSONArray("candidates");
             JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
             JSONArray parts = content.getJSONArray("parts");
@@ -201,6 +291,11 @@ public class TextToTextService {
             return "Error extracting text from JSON response: " + e.getMessage();
         }
     }
+
+
+
+
+
 
     // Read and Speech word
 
@@ -418,7 +513,6 @@ public class TextToTextService {
 //        }
 //
 //    }
-
     public void convertTextToSpeech(String text, String audioFilePath) throws InterruptedException, ExecutionException {
         try (SpeechConfig speechConfig = SpeechConfig.fromSubscription(SPEECH_KEY, SPEECH_REGION)) {
             speechConfig.setSpeechSynthesisVoiceName("en-AU-NatashaNeural");
