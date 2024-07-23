@@ -58,6 +58,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+        <!-- PDF generation library -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-texttospeech</artifactId>
             <version>2.0.3</version>
@@ -126,7 +138,7 @@
             <version>2.3.1</version>
         </dependency>
 
-         <dependency>
+        <dependency>
             <groupId>com.google.cloud.sql</groupId>
             <artifactId>postgres-socket-factory</artifactId>
             <version>1.7.2</version>
@@ -199,7 +211,6 @@
         </dependency>
 
 
-
         <!-- Spring Security Test -->
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -241,6 +252,23 @@
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-textanalytics</artifactId>
             <version>5.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.24</version>
         </dependency>
 
     </dependencies>

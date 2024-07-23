@@ -30,6 +30,7 @@ public class ImageToTextController {
 
         try {
             String prompt = "Analyze the file";
+            // and provide information about the disease and provide complete and accurate information about disease prevention solutions
             String generatedDescription = imageService.generateImageToText(file, prompt);
             return ResponseEntity.ok().body(generatedDescription);
         } catch (IOException e) {

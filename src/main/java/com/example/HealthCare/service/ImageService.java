@@ -29,7 +29,7 @@ public class ImageService {
     private final ImageDataRepository imageRepository;
     private static final String SPEECH_KEY = "4680636dd3d541c4be11a4628e14267e";
     private static final String SPEECH_REGION = "australiaeast";
-    private static final String GOOGLE_API_KEY = "AIzaSyCmXzBSlojLMn0ThsqaXXBQH03OxyfcZT8";
+    private static final String GOOGLE_API_KEY = "AIzaSyCMm0oV_eZCVxswv-r244_S5BSVHEsMkPc";
 //    public String processImage(MultipartFile file) {
 //        try {
 //            byte[] imageData = file.getBytes();
