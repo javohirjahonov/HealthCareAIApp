@@ -1,15 +1,18 @@
+server:
+  port: 8088
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/healthdata
     username: postgres
-    password: 1212
-  #    hikari:
-  #      connectionTimeout: 30000
-  #      maximumPoolSize: 10
-  #      minimumIdle: 2
-  #      idleTimeout: 600000
-  #      maxLifetime: 1800000
+    password: 123
+    hikari:
+      connectionTimeout: 30000
+      maximumPoolSize: 10
+      minimumIdle: 2
+      idleTimeout: 600000
+      maxLifetime: 1800000
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,8 +32,13 @@ spring:
           auth: true
           starttls:
             enable: true
-  application:
-    name: HealthCareAI
+
+  cloud:
+    config:
+      enabled: false
+    import-check:
+      enabled: false
+
 jwt:
   secret:
     key: 753778214125442A472D4B6150645367566B59703373367639792F423F452848567890iuyiu67567886578uyutuio7865467897654678965467uior678545
@@ -38,15 +46,3 @@ jwt:
     expiry: 86400000
   refresh:
     expiry: 604800000
-
-
-server:
-  port: 8086
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-    service-url:
-      defaultZone: http://localhost:8080/eureka
-  instance:
-    hostname: localhost
