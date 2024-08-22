@@ -1,6 +1,5 @@
 package com.example.HealthCare.controller.image;
 
-import com.example.HealthCare.domain.entity.image.ImageEntity;
 import com.example.HealthCare.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/images")

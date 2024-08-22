@@ -1,6 +1,7 @@
 package com.example.HealthCare.service;
 
 import com.example.HealthCare.domain.entity.user.UserEntity;
+import com.example.HealthCare.domain.entity.user.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

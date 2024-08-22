@@ -1,6 +1,8 @@
 package com.example.HealthCare.config;
 
 import com.example.HealthCare.filter.JwtFilterToken;
+import com.example.HealthCare.filter.JwtFilterToken;
+import com.example.HealthCare.filter.JwtFilterToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +34,7 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     private static final String[] WHITE_LIST_URL = {
-            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**", "/text-to-text/**", "/images/**"
+            "/swagger-ui/**", "/v3/api-docs/**", "/user/auth/**3", "/text-to-text/**", "/images/**"
     };
 
     @Bean

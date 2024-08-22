@@ -2,6 +2,10 @@ package com.example.HealthCare.domain.dto.request.user;
 
 import com.example.HealthCare.domain.entity.user.Gender;
 import com.example.HealthCare.domain.entity.user.UserState;
+import com.example.HealthCare.domain.entity.user.Gender;
+import com.example.HealthCare.domain.entity.user.UserState;
+import com.example.HealthCare.domain.entity.user.Gender;
+import com.example.HealthCare.domain.entity.user.UserState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

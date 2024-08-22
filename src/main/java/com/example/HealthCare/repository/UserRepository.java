@@ -14,9 +14,6 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findUserEntityByPhoneNumber(String phoneNumber);
 
 
-    @Query(value = "select u from users u join u.roles r where r.name = 'USER' and u.id = ?1")
+    @Query(value = "select u from b_users u join u.roles r where r.name = 'USER' and u.id = ?1")
     Optional<UserEntity> getUserById(UUID id);
-
-
 }
-

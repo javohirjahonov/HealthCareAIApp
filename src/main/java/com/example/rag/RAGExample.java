@@ -1,4 +1,4 @@
-package com.example.HealthCare.rag;
+package com.example.rag;
 
 import java.io.IOException;
 import java.util.logging.Level;

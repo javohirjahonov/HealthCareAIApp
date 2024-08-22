@@ -1,4 +1,4 @@
-package com.example.HealthCare.rag;
+package com.example.rag;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.File;
