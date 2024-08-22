@@ -39,7 +39,6 @@ public class BeanConfig {
                                 .bearerFormat("JWT")));
     }
 
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
