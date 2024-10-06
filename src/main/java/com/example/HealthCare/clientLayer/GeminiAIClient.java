@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 @Component
 public class GeminiAIClient {
-    private static final String GEMINI_API_KEY = "AIzaSyCMm0oV_eZCVxswv-r244_S5BSVHEsMkPc"; // Replace with your actual API key
+    private static final String GEMINI_API_KEY = "AIzaSyAPT46CIBG2Xtf37rATqvWOAu4DomL8KU4"; // Replace with your actual API key
     private static final Logger LOGGER = Logger.getLogger(GeminiAIClient.class.getName());
     private static final int MAX_RETRIES = 3;
     private static final long RETRY_DELAY_MS = TimeUnit.SECONDS.toMillis(10);
